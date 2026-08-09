@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <h1><%= siteTitle %></h1>
+      <nav class="header-nav">
+        <a href="/">Home</a>
+        <% if (typeof user !== 'undefined' && user) { %>
+          <a href="/timetable">Timetable</a>
+          <a href="/tasks">Tasks</a>
+          <a href="/profile">Profile</a>
+          <a href="/logout">Logout</a>
+          <span class="nav-welcome">Hello, <%= user.name || user.email %></span>
+        <% } else { %>
+          <a class="auth-cta" href="/login">Login</a>
+          <a href="/register">Register</a>
+        <% } %>
+      </nav>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false">
+        <span id="theme-icon">🌙</span>
+      </button>
+    </div>
+  </header>
+  <main>

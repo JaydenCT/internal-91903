@@ -1,0 +1,152 @@
+<%- include('partials/header', { title: title, siteTitle: 'Hello World Node Website', user: user }) %>
+
+<section class="container profile-grid">
+  <div class="hero-card profile-hero">
+    <div class="profile-head">
+      <div class="profile-avatar"><span><%= user.name ? user.name[0].toUpperCase() : user.email[0].toUpperCase() %></span></div>
+      <div>
+        <p class="section-kicker">Profile hub</p>
+        <h2><%= user.name || user.email %></h2>
+        <p class="muted"><%= user.bio || 'Keep your profile updated with goals, badges, and study progress.' %></p>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card accent">
+        <span class="stat-label">Tasks completed</span>
+        <strong><%= typeof summary !== 'undefined' && summary ? summary.completed : 0 %></strong>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Total tasks</span>
+        <strong><%= typeof summary !== 'undefined' && summary ? summary.total : 0 %></strong>
+      </div>
+      <div class="stat-card success">
+        <span class="stat-label">Due soon</span>
+        <strong><%= typeof summary !== 'undefined' && summary ? summary.dueSoon : 0 %></strong>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Streak</span>
+        <strong><%= typeof streak !== 'undefined' ? streak : 0 %> days</strong>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Next lesson</span>
+        <strong><%= nextLesson ? nextLesson.subject : 'No lesson today' %></strong>
+      </div>
+    </div>
+
+    <div class="summary-card profile-summary">
+      <div class="summary-row">
+        <div>
+          <div class="stat-label">Favorite subject</div>
+          <strong><%= user.favoriteSubject || 'Set one in preferences' %></strong>
+        </div>
+        <div>
+          <div class="stat-label">Learning style</div>
+          <strong><%= user.learningStyle || 'Balanced' %></strong>
+        </div>
+      </div>
+      <div class="summary-row">
+        <div>
+          <div class="stat-label">Study goal</div>
+          <strong><%= user.focusGoal || '3 sessions per day' %></strong>
+        </div>
+        <div>
+          <div class="stat-label">Joined</div>
+          <strong><%= user.joinedAt ? new Date(user.joinedAt).toLocaleDateString() : '—' %></strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="panel profile-panel">
+    <h3>Update account</h3>
+    <% if (typeof message !== 'undefined' && message) { %>
+      <div class="success-banner"><%= message %></div>
+    <% } %>
+    <form class="task-form" action="/profile" method="post">
+      <label>Name
+        <input type="text" name="name" value="<%= user.name %>" />
+      </label>
+      <label>Bio
+        <textarea name="bio" rows="3"><%= user.bio %></textarea>
+      </label>
+      <label>Favorite subject
+        <input type="text" name="favoriteSubject" value="<%= user.favoriteSubject %>" placeholder="e.g. Maths, Music" />
+      </label>
+      <label>Learning style
+        <select name="learningStyle">
+          <% learningStyles.forEach(style => { %>
+            <option value="<%= style %>" <%= user.learningStyle === style ? 'selected' : '' %>><%= style %></option>
+          <% }); %>
+        </select>
+      </label>
+      <label>Theme preference
+        <select name="themePref">
+          <% themeOptions.forEach(option => { %>
+            <option value="<%= option %>" <%= user.themePref === option ? 'selected' : '' %>><%= option %></option>
+          <% }); %>
+        </select>
+      </label>
+      <label>Focus goal
+        <input type="text" name="focusGoal" value="<%= user.focusGoal %>" placeholder="e.g. 4 sessions per week" />
+      </label>
+      <div class="form-actions">
+        <button class="task-btn primary" type="submit">Save profile</button>
+      </div>
+    </form>
+
+    <div class="summary-card profile-badges">
+      <h4>Badges</h4>
+      <div class="badge-list">
+        <% (user.badges || []).forEach(badge => { %>
+          <span class="badge"><%= badge %></span>
+        <% }); %>
+      </div>
+    </div>
+  </aside>
+</section>
+
+<section class="container profile-content">
+  <div class="panel profile-activity">
+    <div class="section-header">
+      <div>
+        <p class="section-kicker">Activity</p>
+        <h3>Recent study actions</h3>
+      </div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-label">Pending tasks</span>
+        <strong><%= summary ? summary.pending : 0 %></strong>
+      </div>
+      <div class="stat-card accent">
+        <span class="stat-label">Overdue</span>
+        <strong><%= summary ? summary.overdue : 0 %></strong>
+      </div>
+    </div>
+    <div class="recent-tasks">
+      <% if (recentTasks && recentTasks.length) { %>
+        <% recentTasks.forEach(task => { %>
+          <div class="task-item <%= task.completed ? 'completed' : '' %>">
+            <div class="task-main">
+              <div class="task-heading">
+                <strong><%= task.subject %></strong>
+                <span class="priority-badge priority-<%= task.priority || 'medium' %>"><%= task.priority || 'medium' %></span>
+              </div>
+              <p class="task-description"><%= task.description %></p>
+              <% if (task.dueDate) { %>
+                <div class="task-meta">
+                  <span class="due-badge <%= new Date(task.dueDate) < new Date() ? 'overdue' : '' %>">Due <%= task.dueDate %><% if (task.dueTime) { %> @ <%= task.dueTime %><% } %></span>
+                </div>
+              <% } %>
+            </div>
+          </div>
+        <% }); %>
+      <% } else { %>
+        <div class="empty-state">No tasks yet — add one from the dashboard to see it here.</div>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

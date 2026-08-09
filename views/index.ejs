@@ -1,0 +1,190 @@
+<%- include('partials/header', { title: title, siteTitle: siteTitle }) %>
+
+  <section class="overview container">
+    <div class="hero-card">
+      <p class="section-kicker">Study dashboard</p>
+      <h2><%= heading %></h2>
+      <p><%= message %></p>
+      <div class="hero-features">
+        <span class="pill">✨ Live timetable</span>
+        <span class="pill">📝 Smart tasks</span>
+        <span class="pill">🌙 Theme toggle</span>
+      </div>
+      <div class="hero-actions">
+        <a href="/tasks" class="btn primary">Open tasks</a>
+        <a href="/timetable" class="btn">Open timetable</a>
+        <button id="scroll-to-tasks" class="ghost-btn" type="button">Jump to tasks</button>
+        <button id="highlight-next-lesson" class="ghost-btn" type="button">Show next lesson</button>
+        <button id="shuffle-tip" class="ghost-btn" type="button">New tip</button>
+      </div>
+      <div id="hero-summary" class="hero-summary">
+        <div class="hero-summary-card">
+          <strong>Next lesson</strong>
+          <p id="hero-next-lesson">Loading next lesson…</p>
+        </div>
+        <div class="hero-summary-card">
+          <strong>Next event</strong>
+          <p id="hero-next-event">Loading next event…</p>
+        </div>
+        <div class="hero-summary-card">
+          <strong>Scheduled events</strong>
+          <p id="hero-event-count">Loading events…</p>
+        </div>
+        <div class="hero-summary-card">
+          <strong>Completed today</strong>
+          <p id="hero-completed-today">Loading…</p>
+        </div>
+        <div class="hero-summary-card">
+          <strong>Study streak</strong>
+          <p id="hero-streak">Loading…</p>
+        </div>
+        <div class="hero-summary-card">
+          <strong>Tasks due soon</strong>
+          <p id="hero-tasks-due-soon">Loading tasks…</p>
+        </div>
+        <div class="hero-summary-card progress-card">
+          <strong>Task progress</strong>
+          <div class="progress-ring" id="hero-progress-ring">
+            <span class="progress-percent" id="hero-progress-percent">0%</span>
+          </div>
+          <p id="hero-progress-label">No tasks yet.</p>
+        </div>
+      </div>
+      <p id="study-tip" class="tip-bubble">Tip: Start with the hardest task first.</p>
+    </div>
+  </section>
+
+  <section class="container calendar-section">
+    <div class="calendar-layout">
+      <div class="panel calendar-form-panel">
+        <div class="section-header">
+          <div>
+            <p class="section-kicker">Calendar event</p>
+            <h3>Add an event</h3>
+          </div>
+        </div>
+
+        <form id="calendar-event-form" class="calendar-form">
+          <label>Event title
+            <input id="calendar-event-title" type="text" placeholder="Enter event title" required />
+          </label>
+          <label>Date
+            <input id="calendar-event-date" type="date" required />
+          </label>
+          <label>Description
+            <input id="calendar-event-desc" type="text" placeholder="Add a note" />
+          </label>
+          <button id="calendar-event-save" type="submit">Save event</button>
+        </form>
+      </div>
+
+      <aside class="panel calendar-panel">
+        <div class="section-header">
+          <div>
+            <p class="section-kicker">Study calendar</p>
+            <h3>Weekly view</h3>
+          </div>
+          <div class="calendar-nav">
+            <button id="prev-month" class="ghost-btn" type="button">←</button>
+            <strong id="calendar-month"></strong>
+            <button id="next-month" class="ghost-btn" type="button">→</button>
+            <button id="calendar-today" class="ghost-btn today-btn" type="button">Today</button>
+          </div>
+        </div>
+
+        <div id="calendar-grid" class="calendar-grid"></div>
+
+        <div class="calendar-events-container">
+          <div class="calendar-day-summary">
+            <strong id="calendar-selected-day">Today</strong>
+            <p id="calendar-day-note">Events for the selected date appear here.</p>
+          </div>
+          <ul id="calendar-event-list" class="event-list"></ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="timetable" class="container">
+    <div class="panel">
+      <h3>Timetable</h3>
+      <div class="timetable-controls" style="margin:0.6rem 0">
+        <div class="filter-group">
+          <button id="view-week" class="filter-chip active" type="button" data-view="week">Week</button>
+          <button id="view-day" class="filter-chip" type="button" data-view="day">Day</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="timetable-table" class="timetable">
+          <thead>
+            <tr><th>Lesson</th><th>Time</th><th>Subject</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="tasks" class="container">
+    <div class="panel">
+      <div class="section-header">
+        <div>
+          <p class="section-kicker">Focus mode</p>
+          <h3>Homework Tasks</h3>
+        </div>
+        <button id="clear-completed" class="ghost-btn" type="button">Clear done</button>
+      </div>
+
+      <div id="task-stats" class="stats-grid"></div>
+      <div id="task-summary" class="summary-card"></div>
+
+      <div class="task-toolbar">
+        <div class="filter-group">
+          <button class="filter-chip active" type="button" data-filter="all">All</button>
+          <button class="filter-chip" type="button" data-filter="pending">Pending</button>
+          <button class="filter-chip" type="button" data-filter="completed">Completed</button>
+        </div>
+        <select id="task-sort" class="compact-select">
+          <option value="newest">Newest first</option>
+          <option value="priority">Priority</option>
+          <option value="due">Due date</option>
+        </select>
+      </div>
+
+      <form id="task-form" class="task-form">
+        <label>Due date
+          <input id="task-due-date" type="date" required />
+        </label>
+        <label>Due time
+          <input id="task-due-time" type="time" required />
+        </label>
+        <label>Subject
+          <select id="task-subject"></select>
+        </label>
+        <input id="task-lesson" type="hidden" />
+        <div id="auto-lesson-note" class="small-note">Lesson will be chosen automatically based on date and time.</div>
+        <label>Description
+          <input id="task-desc" required placeholder="Add a task" />
+        </label>
+        <label>Priority
+          <select id="task-priority">
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+          </select>
+        </label>
+        <div class="form-actions">
+          <button id="save-task" type="submit">Add Task</button>
+          <button id="cancel-edit" type="button" class="ghost-btn hidden">Cancel</button>
+        </div>
+      </form>
+
+      <input id="task-search" class="search-bar" placeholder="Search tasks by subject or description" />
+      <ul id="task-list"></ul>
+      <div id="empty-state" class="empty-state hidden">Nothing here yet — add a task to get started.</div>
+    </div>
+  </section>
+
+  <script src="/app.js" defer></script>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,76 @@
+<%- include('partials/header', { title: title, siteTitle: siteTitle, user: user }) %>
+
+<section class="container calendar-section">
+  <div class="calendar-layout">
+    <div class="panel calendar-form-panel">
+      <div class="section-header">
+        <div>
+          <p class="section-kicker">Calendar event</p>
+          <h3>Add study event</h3>
+        </div>
+      </div>
+
+      <form id="calendar-event-form" class="calendar-form">
+        <label>Event title
+          <input id="calendar-event-title" type="text" placeholder="Enter event title" required />
+        </label>
+        <label>Date
+          <input id="calendar-event-date" type="date" required />
+        </label>
+        <label>Description
+          <input id="calendar-event-desc" type="text" placeholder="Add a note" />
+        </label>
+        <button id="calendar-event-save" type="submit">Save event</button>
+      </form>
+    </div>
+
+    <aside class="panel calendar-panel">
+      <div class="section-header">
+        <div>
+          <p class="section-kicker">Study calendar</p>
+          <h3>Weekly overview</h3>
+        </div>
+        <div class="calendar-nav">
+          <button id="prev-month" class="ghost-btn" type="button">←</button>
+          <strong id="calendar-month"></strong>
+          <button id="next-month" class="ghost-btn" type="button">→</button>
+          <button id="calendar-today" class="ghost-btn today-btn" type="button">Today</button>
+        </div>
+      </div>
+
+      <div id="calendar-grid" class="calendar-grid"></div>
+
+      <div class="calendar-events-container">
+        <div class="calendar-day-summary">
+          <strong id="calendar-selected-day">Today</strong>
+          <p id="calendar-day-note">Events for the selected date appear here.</p>
+        </div>
+        <ul id="calendar-event-list" class="event-list"></ul>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section id="timetable" class="container">
+  <div class="panel">
+    <h3>Timetable</h3>
+    <div class="timetable-controls" style="margin:0.6rem 0">
+      <div class="filter-group">
+        <button id="view-week" class="filter-chip active" type="button" data-view="week">Week</button>
+        <button id="view-day" class="filter-chip" type="button" data-view="day">Day</button>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table id="timetable-table" class="timetable">
+        <thead>
+          <tr><th>Lesson</th><th>Time</th><th>Subject</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<script src="/app.js" defer></script>
+
+<%- include('partials/footer') %>

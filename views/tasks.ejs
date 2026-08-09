@@ -1,0 +1,65 @@
+<%- include('partials/header', { title: title, siteTitle: siteTitle, user: user }) %>
+
+<section id="tasks" class="container">
+  <div class="panel">
+    <div class="section-header">
+      <div>
+        <p class="section-kicker">Focus mode</p>
+        <h3>Homework Tasks</h3>
+      </div>
+      <button id="clear-completed" class="ghost-btn" type="button">Clear done</button>
+    </div>
+
+    <div id="task-stats" class="stats-grid"></div>
+    <div id="task-summary" class="summary-card"></div>
+
+    <div class="task-toolbar">
+      <div class="filter-group">
+        <button class="filter-chip active" type="button" data-filter="all">All</button>
+        <button class="filter-chip" type="button" data-filter="pending">Pending</button>
+        <button class="filter-chip" type="button" data-filter="completed">Completed</button>
+      </div>
+      <select id="task-sort" class="compact-select">
+        <option value="newest">Newest first</option>
+        <option value="priority">Priority</option>
+        <option value="due">Due date</option>
+      </select>
+    </div>
+
+    <form id="task-form" class="task-form">
+      <label>Due date
+        <input id="task-due-date" type="date" required />
+      </label>
+      <label>Due time
+        <input id="task-due-time" type="time" required />
+      </label>
+      <label>Subject
+        <select id="task-subject"></select>
+      </label>
+      <input id="task-lesson" type="hidden" />
+      <div id="auto-lesson-note" class="small-note">Lesson will be chosen automatically based on date and time.</div>
+      <label>Description
+        <input id="task-desc" required placeholder="Add a task" />
+      </label>
+      <label>Priority
+        <select id="task-priority">
+          <option value="low">Low</option>
+          <option value="medium" selected>Medium</option>
+          <option value="high">High</option>
+        </select>
+      </label>
+      <div class="form-actions">
+        <button id="save-task" type="submit">Add Task</button>
+        <button id="cancel-edit" type="button" class="ghost-btn hidden">Cancel</button>
+      </div>
+    </form>
+
+    <input id="task-search" class="search-bar" placeholder="Search tasks by subject or description" />
+    <ul id="task-list"></ul>
+    <div id="empty-state" class="empty-state hidden">Nothing here yet — add a task to get started.</div>
+  </div>
+</section>
+
+<script src="/app.js" defer></script>
+
+<%- include('partials/footer') %>

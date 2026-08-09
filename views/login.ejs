@@ -1,0 +1,37 @@
+<%- include('partials/header', { title: title, siteTitle: 'Hello World Node Website', user: null }) %>
+
+<section class="container auth-container">
+  <div class="auth-panel">
+    <h2 class="auth-title">Sign in to your account</h2>
+    <p class="muted">Access your timetable, tasks and profile.</p>
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="error" role="alert"><%= error %></div>
+    <% } %>
+    <form id="login-form" class="auth-form" action="/login" method="post" autocomplete="on">
+      <label class="form-label">Email
+        <input class="form-input" id="email" type="email" name="email" required />
+      </label>
+      <label class="form-label">Password
+        <input class="form-input" id="password" type="password" name="password" required />
+      </label>
+      <div style="display:flex;gap:0.5rem;align-items:center;justify-content:space-between;margin-top:0.6rem">
+        <button class="btn primary" type="submit">Sign in</button>
+        <a class="muted" href="/register">Create account</a>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script>
+  (function(){
+    const email = document.getElementById('email');
+    if (email) email.focus();
+    const form = document.getElementById('login-form');
+    if (form) form.addEventListener('submit', () => {
+      const btn = form.querySelector('button[type=submit]');
+      if (btn) { btn.disabled = true; btn.textContent = 'Signing in…'; }
+    });
+  })();
+</script>
+
+<%- include('partials/footer') %>

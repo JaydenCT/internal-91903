@@ -1,0 +1,22 @@
+<%- include('partials/header', { title: title, siteTitle: 'Hello World Node Website', user: null }) %>
+
+<section class="container">
+  <div class="panel">
+    <h2>Register</h2>
+    <form action="/register" method="post">
+      <label>Name
+        <input type="text" name="name" />
+      </label>
+      <label>Email
+        <input type="email" name="email" required />
+      </label>
+      <label>Password
+        <input type="password" name="password" required />
+      </label>
+      <button type="submit">Create account</button>
+    </form>
+    <p>Already have an account? <a href="/login">Login</a></p>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

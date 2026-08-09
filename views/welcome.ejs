@@ -1,0 +1,18 @@
+<%- include('partials/header', { title: title, siteTitle: 'Study Dashboard', user: user }) %>
+
+<section class="container">
+  <div class="hero-card">
+    <p class="section-kicker">Welcome back</p>
+    <h2>Hi, <%= user.name || user.email %> 👋</h2>
+    <p class="muted">Your personalized study hub — quick links to your timetable, tasks and profile.</p>
+
+    <div style="display:flex;gap:0.8rem;margin-top:1rem;flex-wrap:wrap">
+      <a class="btn primary" href="/">Open Dashboard</a>
+      <a class="btn" href="/timetable">Timetable</a>
+      <a class="btn" href="/tasks">Tasks</a>
+      <a class="btn" href="/profile">Edit profile</a>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
