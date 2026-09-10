@@ -17,8 +17,48 @@ test.after(async () => {
   await new Promise((resolve) => server.close(resolve));
 });
 
+const fs = require('node:fs');
+
+
 test.beforeEach(() => {
   resetTasks();
+});
+
+test('GET / renders School Planner in the site header', async () => {
+  const response = await fetch(`${baseUrl}/`);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /School Planner/);
+});
+
+test('GET /login and /register include the shared theme script', async () => {
+  const [loginResponse, registerResponse] = await Promise.all([
+    fetch(`${baseUrl}/login`),
+    fetch(`${baseUrl}/register`)
+  ]);
+
+  assert.equal(loginResponse.status, 200);
+  assert.equal(registerResponse.status, 200);
+
+  const loginHtml = await loginResponse.text();
+  const registerHtml = await registerResponse.text();
+
+  assert.match(loginHtml, /\/app\.js/);
+  assert.match(registerHtml, /\/app\.js/);
+});
+
+test('profile and welcome views also include the shared theme script', () => {
+  const profileHtml = fs.readFileSync(require.resolve('../views/profile.ejs'), 'utf8');
+  const welcomeHtml = fs.readFileSync(require.resolve('../views/welcome.ejs'), 'utf8');
+  assert.match(profileHtml, /\/app\.js/);
+  assert.match(welcomeHtml, /\/app\.js/);
+});
+
+test('profile view safely falls back when profile option lists are not provided', () => {
+  const profileHtml = fs.readFileSync(require.resolve('../views/profile.ejs'), 'utf8');
+  assert.match(profileHtml, /typeof accentOptions !== 'undefined'/);
+  assert.match(profileHtml, /typeof themeOptions !== 'undefined'/);
+  assert.match(profileHtml, /typeof learningStyles !== 'undefined'/);
 });
 
 test('POST /api/tasks stores completed state and returns it', async () => {

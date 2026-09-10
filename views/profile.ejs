@@ -1,4 +1,4 @@
-<%- include('partials/header', { title: title, siteTitle: 'Hello World Node Website', user: user }) %>
+<%- include('partials/header', { title: title, siteTitle: 'School Planner', user: user }) %>
 
 <section class="container profile-grid">
   <div class="hero-card profile-hero">
@@ -75,16 +75,35 @@
       </label>
       <label>Learning style
         <select name="learningStyle">
-          <% learningStyles.forEach(style => { %>
-            <option value="<%= style %>" <%= user.learningStyle === style ? 'selected' : '' %>><%= style %></option>
-          <% }); %>
+          <% if (typeof learningStyles !== 'undefined') { %>
+            <% learningStyles.forEach(style => { %>
+              <option value="<%= style %>" <%= user.learningStyle === style ? 'selected' : '' %>><%= style %></option>
+            <% }); %>
+          <% } else { %>
+            <option value="Balanced" selected>Balanced</option>
+          <% } %>
         </select>
       </label>
       <label>Theme preference
         <select name="themePref">
-          <% themeOptions.forEach(option => { %>
-            <option value="<%= option %>" <%= user.themePref === option ? 'selected' : '' %>><%= option %></option>
-          <% }); %>
+          <% if (typeof themeOptions !== 'undefined') { %>
+            <% themeOptions.forEach(option => { %>
+              <option value="<%= option %>" <%= user.themePref === option ? 'selected' : '' %>><%= option %></option>
+            <% }); %>
+          <% } else { %>
+            <option value="System" selected>System</option>
+          <% } %>
+        </select>
+      </label>
+      <label>Accent color
+        <select name="accentColor">
+          <% if (typeof accentOptions !== 'undefined') { %>
+            <% accentOptions.forEach(option => { %>
+              <option value="<%= option %>" <%= (user.accentColor || 'violet') === option ? 'selected' : '' %>><%= option %></option>
+            <% }); %>
+          <% } else { %>
+            <option value="violet" selected>violet</option>
+          <% } %>
         </select>
       </label>
       <label>Focus goal
@@ -148,5 +167,7 @@
     </div>
   </div>
 </section>
+
+<script src="/app.js" defer></script>
 
 <%- include('partials/footer') %>

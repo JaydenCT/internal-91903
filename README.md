@@ -1,4 +1,4 @@
-# Hello World Node Website (Express + EJS)
+# School Planner (Express + EJS)
 
 Simple starter using Express and EJS templates.
 

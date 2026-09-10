@@ -11,6 +11,26 @@
   --shadow: 0 20px 45px rgba(79, 70, 229, 0.12);
 }
 
+body[data-accent='violet'] {
+  --accent: #6d59f8;
+  --accent-strong: #312e81;
+}
+
+body[data-accent='blue'] {
+  --accent: #2563eb;
+  --accent-strong: #1e40af;
+}
+
+body[data-accent='green'] {
+  --accent: #0f9b73;
+  --accent-strong: #065f46;
+}
+
+body[data-accent='coral'] {
+  --accent: #e66b4b;
+  --accent-strong: #a13d30;
+}
+
 body[data-theme='dark'] {
   color-scheme: dark;
   --bg: #07111f;
@@ -31,6 +51,44 @@ body {
   color: var(--text);
   background: radial-gradient(circle at top left, var(--bg-soft), var(--bg));
   transition: background 0.2s ease, color 0.2s ease;
+}
+
+.school-marquee {
+  width: 100%;
+  min-height: 2.4rem;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-soft);
+  color: var(--accent-strong);
+  overflow: hidden;
+  position: relative;
+}
+
+.school-marquee-track {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  min-width: max-content;
+  white-space: nowrap;
+  padding: 0.45rem 1.5rem;
+  font-size: 0.84rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  animation: school-marquee-flow 16s linear infinite;
+}
+
+.school-marquee-item {
+  display: inline-block;
+}
+
+.school-marquee-dot {
+  color: var(--accent);
+}
+
+@keyframes school-marquee-flow {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
 .site-header {

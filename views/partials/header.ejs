@@ -6,7 +6,9 @@
   <title><%= title %></title>
   <link rel="stylesheet" href="/styles.css">
 </head>
-<body>
+<% const bodyTheme = typeof user !== 'undefined' && user && user.themePref === 'Dark' ? 'dark' : (typeof user !== 'undefined' && user && user.themePref === 'Light' ? 'light' : 'light'); %>
+<% const bodyAccent = typeof user !== 'undefined' && user && user.accentColor ? user.accentColor : 'violet'; %>
+<body data-theme="<%= bodyTheme %>" data-accent="<%= bodyAccent %>">
   <header class="site-header">
     <div class="header-inner">
       <h1><%= siteTitle %></h1>
@@ -28,4 +30,28 @@
       </button>
     </div>
   </header>
+
+  <section class="school-marquee" aria-label="School Planner announcements">
+    <div class="school-marquee-track">
+      <span class="school-marquee-item">Today’s focus: Study plan</span>
+      <span class="school-marquee-dot">●</span>
+      <span class="school-marquee-item">Next lesson: English</span>
+      <span class="school-marquee-dot">●</span>
+      <span class="school-marquee-item">Tasks due soon</span>
+      <span class="school-marquee-dot">●</span>
+      <span class="school-marquee-item">Calendar check-in</span>
+      <span class="school-marquee-dot">●</span>
+      <span class="school-marquee-item">Maths revision sprint</span>
+      <span class="school-marquee-dot">●</span>
+      <span class="school-marquee-item">Today’s focus: Study plan</span>
+      <span class="school-marquee-dot">●</span>
+      <span class="school-marquee-item">Next lesson: English</span>
+      <span class="school-marquee-dot">●</span>
+      <span class="school-marquee-item">Tasks due soon</span>
+      <span class="school-marquee-dot">●</span>
+      <span class="school-marquee-item">Calendar check-in</span>
+      <span class="school-marquee-dot">●</span>
+      <span class="school-marquee-item">Maths revision sprint</span>
+    </div>
+  </section>
   <main>

@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 const users = [];
 let nextUserId = 1;
 
-app.locals.siteTitle = 'Hello World Node Website';
+app.locals.siteTitle = 'School Planner';
 
 app.use(session({
   secret: process.env.SESSION_SECRET || 'dev-secret',
@@ -167,7 +167,7 @@ app.get('/', (req, res) => {
   const user = req.session.userId ? findUserById(req.session.userId) : null;
   res.render('index', {
     title: 'Home',
-    siteTitle: 'Hello World Node Website',
+    siteTitle: 'School Planner',
     heading: 'Welcome',
     message: 'Your server is running with EJS and Express.',
     user
@@ -177,7 +177,7 @@ app.get('/', (req, res) => {
 // Auth: register
 app.get('/register', (req, res) => {
   const user = req.session.userId ? findUserById(req.session.userId) : null;
-  res.render('register', { title: 'Register', siteTitle: 'Hello World Node Website', user });
+  res.render('register', { title: 'Register', siteTitle: 'School Planner', user });
 });
 
 app.post('/register', async (req, res) => {
@@ -195,6 +195,7 @@ app.post('/register', async (req, res) => {
     themePref: 'System',
     favoriteSubject: '',
     focusGoal: '3 sessions per day',
+    accentColor: 'violet',
     badges: ['Rookie Scholar'],
     joinedAt: new Date().toISOString()
   };
@@ -206,7 +207,7 @@ app.post('/register', async (req, res) => {
 // Auth: login
 app.get('/login', (req, res) => {
   const user = req.session.userId ? findUserById(req.session.userId) : null;
-  res.render('login', { title: 'Login', siteTitle: 'Hello World Node Website', user });
+  res.render('login', { title: 'Login', siteTitle: 'School Planner', user });
 });
 
 app.post('/login', async (req, res) => {
@@ -214,12 +215,12 @@ app.post('/login', async (req, res) => {
   const user = findUserByEmail(email);
   if (!user) {
     const cur = req.session.userId ? findUserById(req.session.userId) : null;
-    return res.status(401).render('login', { title: 'Login', siteTitle: 'Hello World Node Website', error: 'Invalid credentials', user: cur });
+    return res.status(401).render('login', { title: 'Login', siteTitle: 'School Planner', error: 'Invalid credentials', user: cur });
   }
   const ok = await bcrypt.compare(password, user.passwordHash);
   if (!ok) {
     const cur = req.session.userId ? findUserById(req.session.userId) : null;
-    return res.status(401).render('login', { title: 'Login', siteTitle: 'Hello World Node Website', error: 'Invalid credentials', user: cur });
+    return res.status(401).render('login', { title: 'Login', siteTitle: 'School Planner', error: 'Invalid credentials', user: cur });
   }
   req.session.userId = user.id;
   res.redirect('/welcome');
@@ -231,11 +232,11 @@ app.get('/welcome', requireAuth, (req, res) => {
 });
 
 app.get('/timetable', requireAuth, (req, res) => {
-  res.render('timetable', { title: 'Timetable', siteTitle: 'Hello World Node Website', user: req.user });
+  res.render('timetable', { title: 'Timetable', siteTitle: 'School Planner', user: req.user });
 });
 
 app.get('/tasks', requireAuth, (req, res) => {
-  res.render('tasks', { title: 'Tasks', siteTitle: 'Hello World Node Website', user: req.user });
+  res.render('tasks', { title: 'Tasks', siteTitle: 'School Planner', user: req.user });
 });
 
 app.get('/logout', (req, res) => {
@@ -253,7 +254,7 @@ app.get('/profile', requireAuth, (req, res) => {
   awardBadges(userId);
   res.render('profile', {
     title: 'Profile',
-    siteTitle: 'Hello World Node Website',
+    siteTitle: 'School Planner',
     user: req.user,
     summary,
     recentTasks,
@@ -261,18 +262,20 @@ app.get('/profile', requireAuth, (req, res) => {
     streak,
     upcomingEvents,
     themeOptions: ['System', 'Light', 'Dark'],
+    accentOptions: ['violet', 'blue', 'green', 'coral'],
     learningStyles: ['Balanced', 'Focused', 'Creative', 'Review']
   });
 });
 
 app.post('/profile', requireAuth, (req, res) => {
-  const { name, bio, learningStyle, themePref, favoriteSubject, focusGoal } = req.body;
+  const { name, bio, learningStyle, themePref, favoriteSubject, focusGoal, accentColor } = req.body;
   req.user.name = name || req.user.name;
   req.user.bio = bio || req.user.bio;
   req.user.learningStyle = learningStyle || req.user.learningStyle;
   req.user.themePref = themePref || req.user.themePref;
   req.user.favoriteSubject = favoriteSubject || req.user.favoriteSubject;
   req.user.focusGoal = focusGoal || req.user.focusGoal;
+  req.user.accentColor = accentColor || req.user.accentColor || 'violet';
 
   const userId = req.user.id;
   const summary = getTaskSummary(userId);
@@ -280,12 +283,13 @@ app.post('/profile', requireAuth, (req, res) => {
   const nextLesson = getCurrentOrNextLesson();
   res.render('profile', {
     title: 'Profile',
-    siteTitle: 'Hello World Node Website',
+    siteTitle: 'School Planner',
     user: req.user,
     summary,
     recentTasks,
     nextLesson,
     themeOptions: ['System', 'Light', 'Dark'],
+    accentOptions: ['violet', 'blue', 'green', 'coral'],
     learningStyles: ['Balanced', 'Focused', 'Creative', 'Review'],
     message: 'Profile updated successfully'
   });
